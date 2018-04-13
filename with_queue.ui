@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>705</width>
+    <height>475</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="4" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img height=&quot;60&quot; src=&quot;:/newPrefix/download 2.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img height=&quot;60&quot; src=&quot;:/newPrefix/download.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/newPrefix/download 3.png&quot; height=&quot;60&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0" colspan="4">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>All Songs</string>
+      </attribute>
+      <widget class="QTreeWidget" name="treeWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>691</width>
+         <height>301</height>
+        </rect>
+       </property>
+       <property name="sizeIncrement">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <column>
+        <property name="text">
+         <string notr="true">song</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>album</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>artist</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>length</string>
+        </property>
+       </column>
+       <item>
+        <property name="text">
+         <string>New Item1</string>
+        </property>
+        <property name="text">
+         <string>gfdssd</string>
+        </property>
+        <property name="text">
+         <string>fsdfsd</string>
+        </property>
+        <property name="text">
+         <string>dfsdfd</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>New Item2</string>
+        </property>
+        <property name="text">
+         <string>dfsdf</string>
+        </property>
+        <property name="text">
+         <string>dfsdf</string>
+        </property>
+        <property name="text">
+         <string>fsdfsd</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>nothing</string>
+        </property>
+        <property name="text">
+         <string>dsfsdf</string>
+        </property>
+        <property name="text">
+         <string>sdfsdfsdfa</string>
+        </property>
+        <property name="text">
+         <string>sdasds</string>
+        </property>
+       </item>
+      </widget>
+      <zorder>treeWidget</zorder>
+      <zorder>verticalLayoutWidget</zorder>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Play Queue</string>
+      </attribute>
+      <widget class="QTreeWidget" name="treeWidget_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>691</width>
+         <height>301</height>
+        </rect>
+       </property>
+       <property name="sizeIncrement">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <column>
+        <property name="text">
+         <string>song</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>album</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>artist</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>length</string>
+        </property>
+       </column>
+       <item>
+        <property name="text">
+         <string>New Item1</string>
+        </property>
+        <property name="text">
+         <string>gfdssd</string>
+        </property>
+        <property name="text">
+         <string>fsdfsd</string>
+        </property>
+        <property name="text">
+         <string>dfsdfd</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Search</string>
+      </attribute>
+      <widget class="QTreeWidget" name="treeWidget_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>40</y>
+         <width>681</width>
+         <height>281</height>
+        </rect>
+       </property>
+       <property name="sizeIncrement">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <column>
+        <property name="text">
+         <string>song</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>album</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>artist</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>length</string>
+        </property>
+       </column>
+       <item>
+        <property name="text">
+         <string>New Item1</string>
+        </property>
+        <property name="text">
+         <string>gfdssd</string>
+        </property>
+        <property name="text">
+         <string>fsdfsd</string>
+        </property>
+        <property name="text">
+         <string>dfsdfd</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>New Item2</string>
+        </property>
+        <property name="text">
+         <string>dfsdf</string>
+        </property>
+        <property name="text">
+         <string>dfsdf</string>
+        </property>
+        <property name="text">
+         <string>fsdfsd</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>nothing</string>
+        </property>
+        <property name="text">
+         <string>dsfsdf</string>
+        </property>
+        <property name="text">
+         <string>sdfsdfsdfa</string>
+        </property>
+        <property name="text">
+         <string>sdasds</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QComboBox" name="comboBox_3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>91</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Title</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Album</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Artist</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>10</y>
+         <width>441</width>
+         <height>27</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton">
+       <property name="geometry">
+        <rect>
+         <x>570</x>
+         <y>10</y>
+         <width>99</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Search</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Sort by</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="3" rowspan="3">
+    <widget class="QDial" name="dial"/>
+   </item>
+   <item row="3" column="1">
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QComboBox" name="comboBox_2">
+       <item>
+        <property name="text">
+         <string>Title</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Album</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Artist</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../Documents/resources/test.qrc"/>
+ </resources>
+ <connections/>
+</ui>
