@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'without_queue.ui'
-#
-# Created by: PyQt4 UI code generator 4.11.4
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt4 import QtCore, QtGui
 
 try:
@@ -117,8 +109,40 @@ class Ui_widget(object):
         self.gridLayout.addLayout(self.verticalLayout, 4, 2, 1, 1)
 
         self.retranslateUi(widget)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(widget)
+
+    def pressedNextButton(self):
+        print("Next button is pressed!")
+
+    def pressedPlayButton(self):
+        print("Play button is pressed!")
+
+    def pressedBackButton(self):
+        print("Back button is pressed!")
+
+    def indexChangeSort(self, item):
+        print(item)
+
+    def indexChangeSearch(self, item):
+        print(item)
+
+    def pressedSearchButton(self):
+        search_query = self.lineEdit.text()
+        print(search_query)
+
+    def sliderChange(self, valueOfSlider):
+        print(valueOfSlider)
+    
+    def dialChange(self, valueOfDial):
+        print(valueOfDial)
+
+    def clickItemAllSongs(self, item):
+        print(item.text(0))
+
+    def clickItemSearch(self, item):
+        print(item.text(0))
+
 
     def retranslateUi(self, widget):
         widget.setWindowTitle(_translate("widget", "MUSIBLISS", None))
@@ -174,6 +198,21 @@ class Ui_widget(object):
         self.comboBox_2.setItemText(0, _translate("widget", "Title", None))
         self.comboBox_2.setItemText(1, _translate("widget", "Album", None))
         self.comboBox_2.setItemText(2, _translate("widget", "Artist", None))
+
+
+        # custom function calls
+        self.dial.setValue(50)
+        self.pushButton_2.clicked.connect(self.pressedNextButton)
+        self.pushButton_3.clicked.connect(self.pressedPlayButton)
+        self.pushButton_4.clicked.connect(self.pressedBackButton)
+        self.comboBox_2.currentIndexChanged.connect(self.indexChangeSort)
+        self.comboBox_3.currentIndexChanged.connect(self.indexChangeSearch)
+        self.pushButton.clicked.connect(self.pressedSearchButton)
+        self.horizontalSlider.valueChanged[int].connect(self.sliderChange)
+        self.dial.valueChanged.connect(self.dialChange)
+        self.treeWidget.itemClicked.connect(self.clickItemAllSongs)
+        self.treeWidget_3.itemClicked.connect(self.clickItemSearch)
+
 
 
 if __name__ == "__main__":
