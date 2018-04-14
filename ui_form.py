@@ -134,6 +134,17 @@ class Ui_widget(object):
         QtCore.QMetaObject.connectSlotsByName(widget)
 
     def pressedNextButton(self):
+        for i in range(number):
+            item_0 = QtGui.QTreeWidgetItem(self.treeWidget)
+
+
+        for i in range(number):
+            self.treeWidget.topLevelItem(i).setText(0, _translate("widget", str(results[i]["song_title"]), None))
+            self.treeWidget.topLevelItem(i).setText(1, _translate("widget", str(results[i]["song_album"]), None))
+            self.treeWidget.topLevelItem(i).setText(2, _translate("widget", str(results[i]["song_artist"]), None))
+            song_len = results[i]["song_length"]
+            song_length = str(int(song_len / 60)) + ":" + str(int(song_len % 60))
+            self.treeWidget.topLevelItem(i).setText(3, _translate("widget", song_length, None))
         print("Next button is pressed!")
 
     def pressedPlayButton(self):
