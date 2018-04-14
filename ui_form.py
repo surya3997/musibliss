@@ -4,12 +4,12 @@ from pymongo import MongoClient
 import vlc
 
 try:
-    client = MongoClient("mongodb://hd15pd38:hd15pd38@10.1.67.157:27017/hd15pd38")
+    client = MongoClient("mongodb://localhost:27017")
     db = client.hd15pd38
 except:
     print("DB connection error")
 
-http_file_path = "http://10.1.67.157/songs"
+http_file_path = "http://localhost/songs"
 
 results = []
 result_cursor = db.songs.find()
@@ -36,7 +36,7 @@ except AttributeError:
 class Ui_widget(object):
     def setupUi(self, widget):
         widget.setObjectName(_fromUtf8("widget"))
-        widget.resize(705, 475)
+        widget.resize(717, 475)
         self.gridLayout = QtGui.QGridLayout(widget)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.horizontalLayout = QtGui.QHBoxLayout()
@@ -72,7 +72,7 @@ class Ui_widget(object):
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
         self.treeWidget = QtGui.QTreeWidget(self.tab)
-        self.treeWidget.setGeometry(QtCore.QRect(0, 0, 691, 301))
+        self.treeWidget.setGeometry(QtCore.QRect(0, 0, 691, 311))
         self.treeWidget.setSizeIncrement(QtCore.QSize(0, 0))
         self.treeWidget.setObjectName(_fromUtf8("treeWidget"))
         
@@ -85,7 +85,7 @@ class Ui_widget(object):
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
         self.treeWidget_3 = QtGui.QTreeWidget(self.tab_3)
-        self.treeWidget_3.setGeometry(QtCore.QRect(0, 40, 681, 281))
+        self.treeWidget_3.setGeometry(QtCore.QRect(0, 40, 691, 281))
         self.treeWidget_3.setSizeIncrement(QtCore.QSize(0, 0))
         self.treeWidget_3.setObjectName(_fromUtf8("treeWidget_3"))
         item_0 = QtGui.QTreeWidgetItem(self.treeWidget_3)

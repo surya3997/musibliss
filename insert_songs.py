@@ -1,9 +1,9 @@
 import os
 import eyed3
 from pymongo import MongoClient
-client  = MongoClient("mongodb://hd15pd38:hd15pd38@localhost:27017/hd15pd38")
+client  = MongoClient("mongodb://localhost:27017")
 db = client.hd15pd38
-path = "../../songs/"
+path = "/var/www/html/songs/"
 x = [(i[0],i[2]) for i in os.walk(path)]
 name = []
 fullPath = []
