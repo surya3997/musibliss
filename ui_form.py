@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from PyQt4 import QtCore, QtGui
 
 try:
@@ -223,4 +224,4 @@ if __name__ == "__main__":
     ui.setupUi(widget)
     widget.show()
     sys.exit(app.exec_())
-
+#hi surya !! check check commit to repo
