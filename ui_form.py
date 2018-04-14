@@ -12,7 +12,6 @@ results = []
 for i in result_cursor:
     results.append(i)
 
-
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
