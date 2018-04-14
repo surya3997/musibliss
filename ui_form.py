@@ -1,12 +1,15 @@
 from PyQt4 import QtCore, QtGui
 import pymongo
 from pymongo import MongoClient
+import vlc
 
 try:
     client = MongoClient("mongodb://hd15pd38:hd15pd38@10.1.67.157:27017/hd15pd38")
     db = client.hd15pd38
 except:
     print("DB connection error")
+
+http_file_path = "http://10.1.67.157/songs"
 
 results = []
 result_cursor = db.songs.find()
@@ -134,6 +137,7 @@ class Ui_widget(object):
         print("Next button is pressed!")
 
     def pressedPlayButton(self):
+        self.treeWidget.clear()
         print("Play button is pressed!")
 
     def pressedBackButton(self):
@@ -156,7 +160,21 @@ class Ui_widget(object):
         print(valueOfDial)
 
     def clickItemAllSongs(self, item):
-        print(item.text(0))
+        self.horizontalSlider.setTickInterval(1)
+        for i in results:
+            if i["song_title"] == item.text(0):
+                play_path = i["song_path"].split("songs")[1]
+                play_file = http_file_path + play_path
+                play_file = "%20".join(play_file.split(" "))
+                print(play_file)
+
+                if self.first_time_play == 1:
+                    self.vlcPlay.stop()
+                self.first_time_play = 1
+
+                self.vlcPlay = vlc.MediaPlayer(play_file)
+                self.vlcPlay.play()
+                break
 
     def clickItemSearch(self, item):
         print(item.text(0))
@@ -174,6 +192,8 @@ class Ui_widget(object):
         __sortingEnabled = self.treeWidget.isSortingEnabled()
         self.treeWidget.setSortingEnabled(False)
 
+        self.first_time_play = 0
+
         for i in range(number):
             self.treeWidget.topLevelItem(i).setText(0, _translate("widget", str(results[i]["song_title"]), None))
             self.treeWidget.topLevelItem(i).setText(1, _translate("widget", str(results[i]["song_album"]), None))
@@ -182,7 +202,7 @@ class Ui_widget(object):
             song_length = str(int(song_len / 60)) + ":" + str(int(song_len % 60))
             self.treeWidget.topLevelItem(i).setText(3, _translate("widget", song_length, None))
 
-
+        
 
         self.treeWidget.setSortingEnabled(__sortingEnabled)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("widget", "All Songs", None))
