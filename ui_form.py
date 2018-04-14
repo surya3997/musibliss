@@ -1,4 +1,23 @@
 from PyQt4 import QtCore, QtGui
+import pymongo
+from pymongo import MongoClient
+import vlc
+
+try:
+    client = MongoClient("mongodb://hd15pd38:hd15pd38@10.1.67.157:27017/hd15pd38")
+    db = client.hd15pd38
+except:
+    print("DB connection error")
+
+http_file_path = "http://10.1.67.157/songs"
+
+results = []
+result_cursor = db.songs.find()
+
+for i in result_cursor:
+    results.append(i)
+
+number = len(results)
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -56,10 +75,12 @@ class Ui_widget(object):
         self.treeWidget.setGeometry(QtCore.QRect(0, 0, 691, 301))
         self.treeWidget.setSizeIncrement(QtCore.QSize(0, 0))
         self.treeWidget.setObjectName(_fromUtf8("treeWidget"))
-        self.treeWidget.headerItem().setText(0, _fromUtf8("song"))
-        item_0 = QtGui.QTreeWidgetItem(self.treeWidget)
-        item_0 = QtGui.QTreeWidgetItem(self.treeWidget)
-        item_0 = QtGui.QTreeWidgetItem(self.treeWidget)
+        
+
+        for i in range(number):
+            item_0 = QtGui.QTreeWidgetItem(self.treeWidget)
+        
+
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
@@ -113,9 +134,21 @@ class Ui_widget(object):
         QtCore.QMetaObject.connectSlotsByName(widget)
 
     def pressedNextButton(self):
+        for i in range(number):
+            item_0 = QtGui.QTreeWidgetItem(self.treeWidget)
+
+
+        for i in range(number):
+            self.treeWidget.topLevelItem(i).setText(0, _translate("widget", str(results[i]["song_title"]), None))
+            self.treeWidget.topLevelItem(i).setText(1, _translate("widget", str(results[i]["song_album"]), None))
+            self.treeWidget.topLevelItem(i).setText(2, _translate("widget", str(results[i]["song_artist"]), None))
+            song_len = results[i]["song_length"]
+            song_length = str(int(song_len / 60)) + ":" + str(int(song_len % 60))
+            self.treeWidget.topLevelItem(i).setText(3, _translate("widget", song_length, None))
         print("Next button is pressed!")
 
     def pressedPlayButton(self):
+        self.treeWidget.clear()
         print("Play button is pressed!")
 
     def pressedBackButton(self):
@@ -138,7 +171,21 @@ class Ui_widget(object):
         print(valueOfDial)
 
     def clickItemAllSongs(self, item):
-        print(item.text(0))
+        self.horizontalSlider.setTickInterval(1)
+        for i in results:
+            if i["song_title"] == item.text(0):
+                play_path = i["song_path"].split("songs")[1]
+                play_file = http_file_path + play_path
+                play_file = "%20".join(play_file.split(" "))
+                print(play_file)
+
+                if self.first_time_play == 1:
+                    self.vlcPlay.stop()
+                self.first_time_play = 1
+
+                self.vlcPlay = vlc.MediaPlayer(play_file)
+                self.vlcPlay.play()
+                break
 
     def clickItemSearch(self, item):
         print(item.text(0))
@@ -149,25 +196,25 @@ class Ui_widget(object):
         self.pushButton_4.setText(_translate("widget", "⏪", None))
         self.pushButton_3.setText(_translate("widget", "▮▮ ▶", None))
         self.pushButton_2.setText(_translate("widget", "⏩", None))
+        self.treeWidget.headerItem().setText(0, _fromUtf8("song"))
         self.treeWidget.headerItem().setText(1, _translate("widget", "album", None))
         self.treeWidget.headerItem().setText(2, _translate("widget", "artist", None))
         self.treeWidget.headerItem().setText(3, _translate("widget", "length", None))
         __sortingEnabled = self.treeWidget.isSortingEnabled()
         self.treeWidget.setSortingEnabled(False)
-        self.treeWidget.topLevelItem(0).setText(0, _translate("widget", "New Item1", None))
-        self.treeWidget.topLevelItem(0).setText(1, _translate("widget", "gfdssd", None))
-        self.treeWidget.topLevelItem(0).setText(2, _translate("widget", "fsdfsd", None))
-        self.treeWidget.topLevelItem(0).setText(3, _translate("widget", "dfsdfd", None))
-        self.treeWidget.topLevelItem(1).setText(0, _translate("widget", "New Item2", None))
-        self.treeWidget.topLevelItem(1).setText(1, _translate("widget", "dfsdf", None))
-        self.treeWidget.topLevelItem(1).setText(2, _translate("widget", "dfsdf", None))
-        self.treeWidget.topLevelItem(1).setText(3, _translate("widget", "fsdfsd", None))
-        self.treeWidget.topLevelItem(2).setText(0, _translate("widget", "nothing", None))
-        self.treeWidget.topLevelItem(2).setText(1, _translate("widget", "dsfsdf", None))
-        self.treeWidget.topLevelItem(2).setText(2, _translate("widget", "sdfsdfsdfa", None))
-        self.treeWidget.topLevelItem(2).setText(3, _translate("widget", "sdasds", None))
+
+        self.first_time_play = 0
+
+        for i in range(number):
+            self.treeWidget.topLevelItem(i).setText(0, _translate("widget", str(results[i]["song_title"]), None))
+            self.treeWidget.topLevelItem(i).setText(1, _translate("widget", str(results[i]["song_album"]), None))
+            self.treeWidget.topLevelItem(i).setText(2, _translate("widget", str(results[i]["song_artist"]), None))
+            song_len = results[i]["song_length"]
+            song_length = str(int(song_len / 60)) + ":" + str(int(song_len % 60))
+            self.treeWidget.topLevelItem(i).setText(3, _translate("widget", song_length, None))
+
         
-        
+
         self.treeWidget.setSortingEnabled(__sortingEnabled)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("widget", "All Songs", None))
         self.treeWidget_3.headerItem().setText(0, _translate("widget", "song", None))
