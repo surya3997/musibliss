@@ -2,14 +2,18 @@ from PyQt4 import QtCore, QtGui
 import pymongo
 from pymongo import MongoClient
 import vlc
+import json
+
+config = json.load(open('configuration.json'))
+setup = config[config["current_state"]]
+mongo_connection = setup["mongo"]
+http_file_path = setup["http_path"]
 
 try:
-    client = MongoClient("mongodb://localhost:27017")
+    client = MongoClient(mongo_connection)
     db = client.hd15pd38
 except:
     print("DB connection error")
-
-http_file_path = "http://localhost/songs"
 
 results = []
 result_cursor = db.songs.find()
