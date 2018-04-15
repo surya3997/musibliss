@@ -1,0 +1,13 @@
+{
+    "current_state" : "local",
+    "local" : {
+        "mongo" : "mongodb://localhost:27017",
+        "insert_songs_path" : "/var/www/html/songs/",
+        "http_path" : "http://localhost/songs"
+    },
+    "lab" : {
+        "mongo" : "mongodb://hd15pd38:hd15pd38@10.1.67.157:27017/hd15pd38",
+        "insert_songs_path" : "../../songs/",
+        "http_path" : "http://10.1.67.157/songs"
+    }
+}
