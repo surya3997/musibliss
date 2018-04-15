@@ -3,6 +3,8 @@ import pymongo
 from pymongo import MongoClient
 import vlc
 import json
+from time import sleep
+import threading
 
 config = json.load(open('configuration.json'))
 setup = config[config["current_state"]]
@@ -176,6 +178,13 @@ class Ui_widget(object):
         '''
         print("Next button is pressed!")
 
+    def seekStatus(self):
+        if self.counterSeek < 100:
+            threading.Timer(1.0, self.seekStatus).start()
+        self.horizontalSlider.triggerAction(self.horizontalSlider.SliderSingleStepAdd)
+        self.counterSeek += 1
+        
+
     def pressedPlayButton(self):
         if self.first_time_play == 1 and number > 0:
             play_path = results[0]["song_path"].split("songs")[1]
@@ -191,9 +200,12 @@ class Ui_widget(object):
             if self.play_status == 1:
                 self.vlcPlay.pause()
                 self.play_status = 0
+                self.counterSeek = 100
             else:
                 self.vlcPlay.play()
                 self.play_status = 1
+                self.counterSeek = 0
+                self.seekStatus()
 
 
         print("Play button is pressed!")
@@ -271,6 +283,7 @@ class Ui_widget(object):
         self.first_time_play = 1
         self.play_status = 0
         self.current_play_index = 0
+        self.counterSeek = 0
 
         for i in range(number):
             self.treeWidget.topLevelItem(i).setText(0, _translate("widget", str(results[i]["song_title"]), None))
@@ -326,6 +339,8 @@ class Ui_widget(object):
         self.dial.valueChanged.connect(self.dialChange)
         self.treeWidget.itemClicked.connect(self.clickItemAllSongs)
         self.treeWidget_3.itemClicked.connect(self.clickItemSearch)
+        self.seekStatus()
+
 
 
 
