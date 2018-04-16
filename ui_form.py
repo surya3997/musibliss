@@ -158,7 +158,7 @@ class Ui_widget(object):
             play_path = results[self.current_play_index]["song_path"].split("songs")[1]
             self.play_file = http_file_path + play_path
             self.play_file = "%20".join(self.play_file.split(" "))
-            print(self.play_file)
+            # print(self.play_file)
 
             if self.first_time_play == 0:
                 self.vlcPlay.stop()
@@ -172,7 +172,7 @@ class Ui_widget(object):
 
         ''' 
         '''
-        print("Next button is pressed!")
+        # print("Next button is pressed!")
 
     def seekStatusAdd(self):
         if self.counterSeek < 100:
@@ -197,7 +197,7 @@ class Ui_widget(object):
             play_path = results[0]["song_path"].split("songs")[1]
             self.play_file = http_file_path + play_path
             self.play_file = "%20".join(self.play_file.split(" "))
-            print(self.play_file)
+            # print(self.play_file)
             self.first_time_play = 0
 
             self.vlcPlay = vlc.MediaPlayer(self.play_file)
@@ -216,7 +216,7 @@ class Ui_widget(object):
                 self.play_status = 1
                 self.startSeek()
 
-        print("Play button is pressed!")
+        # print("Play button is pressed!")
 
     def pressedBackButton(self):
         if self.current_play_index > 0:
@@ -224,7 +224,7 @@ class Ui_widget(object):
             play_path = results[self.current_play_index]["song_path"].split("songs")[1]
             self.play_file = http_file_path + play_path
             self.play_file = "%20".join(self.play_file.split(" "))
-            print(self.play_file)
+            # print(self.play_file)
 
             if self.first_time_play == 0:
                 self.vlcPlay.stop()
@@ -236,10 +236,30 @@ class Ui_widget(object):
             self.play_status = 1
             self.startSeek()
 
-        print("Back button is pressed!")
+        # print("Back button is pressed!")
 
     def indexChangeSort(self, item):
-        self.default_sort_index = item
+        # print(search_by[item])
+        sort_results = []
+        sort_result_cursor = db.songs.find().sort([(search_by[item], pymongo.ASCENDING)])
+        self.treeWidget.clear()
+
+        for i in sort_result_cursor:
+            sort_results.append(i)
+
+        # print(sort_results[:5])
+
+        sort_number = len(sort_results)
+        for i in range(sort_number):
+            item_0 = QtGui.QTreeWidgetItem(self.treeWidget)
+
+        for i in range(sort_number):
+            self.treeWidget.topLevelItem(i).setText(0, _translate("widget", str(sort_results[i]["song_title"]), None))
+            self.treeWidget.topLevelItem(i).setText(1, _translate("widget", str(sort_results[i]["song_album"]), None))
+            self.treeWidget.topLevelItem(i).setText(2, _translate("widget", str(sort_results[i]["song_artist"]), None))
+            song_len = sort_results[i]["song_length"]
+            song_length = str(int(song_len / 60)) + ":" + str(int(song_len % 60))
+            self.treeWidget.topLevelItem(i).setText(3, _translate("widget", song_length, None))
 
     def indexChangeSearch(self, item):
         self.default_search_index = item
@@ -255,7 +275,7 @@ class Ui_widget(object):
             searchResults.append(i)
 
         search_number = len(searchResults)
-        print(searchResults)
+        # print(searchResults)
 
         self.treeWidget_3.clear()
 
@@ -271,11 +291,12 @@ class Ui_widget(object):
             self.treeWidget_3.topLevelItem(i).setText(3, _translate("widget", song_length, None))
 
     def sliderChange(self, valueOfSlider):
-        print(valueOfSlider)
+        # print(valueOfSlider)
+        pass
     
     def dialChange(self, valueOfDial):
         self.vlcPlay.audio_set_volume(valueOfDial)
-        print(valueOfDial)
+        # print(valueOfDial)
 
     def clickItemAllSongs(self, item):
         for index, i in enumerate(results):
@@ -283,7 +304,7 @@ class Ui_widget(object):
                 play_path = i["song_path"].split("songs")[1]
                 self.play_file = http_file_path + play_path
                 self.play_file = "%20".join(self.play_file.split(" "))
-                print(self.play_file)
+                # print(self.play_file)
                 self.current_play_index = index
 
                 if self.first_time_play == 0:
@@ -303,7 +324,7 @@ class Ui_widget(object):
                 play_path = i["song_path"].split("songs")[1]
                 self.play_file = http_file_path + play_path
                 self.play_file = "%20".join(self.play_file.split(" "))
-                print(self.play_file)
+                # print(self.play_file)
                 self.current_play_index = index
 
                 if self.first_time_play == 0:
@@ -347,7 +368,6 @@ class Ui_widget(object):
             self.treeWidget.topLevelItem(i).setText(3, _translate("widget", song_length, None))
 
         
-
         self.treeWidget.setSortingEnabled(__sortingEnabled)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("widget", "All Songs", None))
         self.treeWidget_3.headerItem().setText(0, _translate("widget", "song", None))
@@ -356,18 +376,6 @@ class Ui_widget(object):
         self.treeWidget_3.headerItem().setText(3, _translate("widget", "length", None))
         __sortingEnabled = self.treeWidget_3.isSortingEnabled()
         self.treeWidget_3.setSortingEnabled(False)
-        ''' self.treeWidget_3.topLevelItem(0).setText(0, _translate("widget", "New Item1", None))
-        self.treeWidget_3.topLevelItem(0).setText(1, _translate("widget", "gfdssd", None))
-        self.treeWidget_3.topLevelItem(0).setText(2, _translate("widget", "fsdfsd", None))
-        self.treeWidget_3.topLevelItem(0).setText(3, _translate("widget", "dfsdfd", None))
-        self.treeWidget_3.topLevelItem(1).setText(0, _translate("widget", "New Item2", None))
-        self.treeWidget_3.topLevelItem(1).setText(1, _translate("widget", "dfsdf", None))
-        self.treeWidget_3.topLevelItem(1).setText(2, _translate("widget", "dfsdf", None))
-        self.treeWidget_3.topLevelItem(1).setText(3, _translate("widget", "fsdfsd", None))
-        self.treeWidget_3.topLevelItem(2).setText(0, _translate("widget", "nothing", None))
-        self.treeWidget_3.topLevelItem(2).setText(1, _translate("widget", "dsfsdf", None))
-        self.treeWidget_3.topLevelItem(2).setText(2, _translate("widget", "sdfsdfsdfa", None))
-        self.treeWidget_3.topLevelItem(2).setText(3, _translate("widget", "sdasds", None)) '''
         self.treeWidget_3.setSortingEnabled(__sortingEnabled)
         self.comboBox_3.setItemText(0, _translate("widget", "Title", None))
         self.comboBox_3.setItemText(1, _translate("widget", "Album", None))
