@@ -1,5 +1,5 @@
 {
-    "current_state" : "local",
+    "current_state" : "lab",
     "local" : {
         "mongo" : "mongodb://localhost:27017",
         "insert_songs_path" : "/var/www/html/songs/",

@@ -5,7 +5,7 @@ from pymongo import MongoClient
 import vlc
 import json
 from time import sleep
-import threading
+import threading, re
 
 config = json.load(open('configuration.json'))
 setup = config[config["current_state"]]
@@ -17,6 +17,8 @@ try:
     db = client.hd15pd38
 except:
     print("DB connection error")
+
+search_by = ["song_title", "song_album", "song_artist"]
 
 results = []
 result_cursor = db.songs.find()
@@ -160,31 +162,35 @@ class Ui_widget(object):
 
             if self.first_time_play == 0:
                 self.vlcPlay.stop()
+                self.resetSeek()
             self.first_time_play = 0
 
             self.vlcPlay = vlc.MediaPlayer(self.play_file)
             self.vlcPlay.play()
             self.play_status = 1
+            self.startSeek()
 
-        ''' for i in range(number):
-            item_0 = QtGui.QTreeWidgetItem(self.treeWidget)
-
-        for i in range(number):
-            self.treeWidget.topLevelItem(i).setText(0, _translate("widget", str(results[i]["song_title"]), None))
-            self.treeWidget.topLevelItem(i).setText(1, _translate("widget", str(results[i]["song_album"]), None))
-            self.treeWidget.topLevelItem(i).setText(2, _translate("widget", str(results[i]["song_artist"]), None))
-            song_len = results[i]["song_length"]
-            song_length = str(int(song_len / 60)) + ":" + str(int(song_len % 60))
-            self.treeWidget.topLevelItem(i).setText(3, _translate("widget", song_length, None))
+        ''' 
         '''
         print("Next button is pressed!")
 
-    def seekStatus(self):
+    def seekStatusAdd(self):
         if self.counterSeek < 100:
-            threading.Timer(1.0, self.seekStatus).start()
+            self.happeningThread = threading.Timer(1.0, self.seekStatusAdd)
+            self.happeningThread.daemon = True
+            self.happeningThread.start()
         self.horizontalSlider.triggerAction(self.horizontalSlider.SliderSingleStepAdd)
         self.counterSeek += 1
+
+    def startSeek(self):
+        self.counterSeek = 0
+        self.seekStatusAdd()
+
+    def stopSeek(self):
+        self.counterSeek = 100
         
+    def resetSeek(self):
+        self.horizontalSlider.setValue(0)
 
     def pressedPlayButton(self):
         if self.first_time_play == 1 and number > 0:
@@ -197,17 +203,18 @@ class Ui_widget(object):
             self.vlcPlay = vlc.MediaPlayer(self.play_file)
             self.vlcPlay.play()
             self.play_status = 1
+
+            self.startSeek()
+
         elif self.first_time_play == 0:
             if self.play_status == 1:
                 self.vlcPlay.pause()
                 self.play_status = 0
-                self.counterSeek = 100
+                self.stopSeek()
             else:
                 self.vlcPlay.play()
                 self.play_status = 1
-                self.counterSeek = 0
-                self.seekStatus()
-
+                self.startSeek()
 
         print("Play button is pressed!")
 
@@ -221,23 +228,47 @@ class Ui_widget(object):
 
             if self.first_time_play == 0:
                 self.vlcPlay.stop()
+                self.resetSeek()
             self.first_time_play = 0
 
             self.vlcPlay = vlc.MediaPlayer(self.play_file)
             self.vlcPlay.play()
             self.play_status = 1
+            self.startSeek()
 
         print("Back button is pressed!")
 
     def indexChangeSort(self, item):
-        print(item)
+        self.default_sort_index = item
 
     def indexChangeSearch(self, item):
-        print(item)
+        self.default_search_index = item
 
     def pressedSearchButton(self):
         search_query = self.lineEdit.text()
-        print(search_query)
+        search_key = search_by[self.default_search_index]
+        searchResults = []
+        # search_result_cursor = db.songs.find({search_key:re.compile('^' + re.escape(search_query) + '$', re.IGNORECASE)})
+
+        search_result_cursor = db.songs.find({search_key:{'$regex' : ".*" + search_query +  ".*"}})
+        for i in search_result_cursor:
+            searchResults.append(i)
+
+        search_number = len(searchResults)
+        print(searchResults)
+
+        self.treeWidget_3.clear()
+
+        for i in range(search_number):
+            item_0 = QtGui.QTreeWidgetItem(self.treeWidget_3)
+
+        for i in range(search_number):
+            self.treeWidget_3.topLevelItem(i).setText(0, _translate("widget", str(searchResults[i]["song_title"]), None))
+            self.treeWidget_3.topLevelItem(i).setText(1, _translate("widget", str(searchResults[i]["song_album"]), None))
+            self.treeWidget_3.topLevelItem(i).setText(2, _translate("widget", str(searchResults[i]["song_artist"]), None))
+            song_len = searchResults[i]["song_length"]
+            song_length = str(int(song_len / 60)) + ":" + str(int(song_len % 60))
+            self.treeWidget_3.topLevelItem(i).setText(3, _translate("widget", song_length, None))
 
     def sliderChange(self, valueOfSlider):
         print(valueOfSlider)
@@ -247,7 +278,6 @@ class Ui_widget(object):
         print(valueOfDial)
 
     def clickItemAllSongs(self, item):
-        self.horizontalSlider.setTickInterval(1)
         for index, i in enumerate(results):
             if i["song_title"] == item.text(0):
                 play_path = i["song_path"].split("songs")[1]
@@ -258,15 +288,34 @@ class Ui_widget(object):
 
                 if self.first_time_play == 0:
                     self.vlcPlay.stop()
+                    self.resetSeek()
                 self.first_time_play = 0
 
                 self.vlcPlay = vlc.MediaPlayer(self.play_file)
                 self.vlcPlay.play()
                 self.play_status = 1
+                self.startSeek()
                 break
 
     def clickItemSearch(self, item):
-        print(item.text(0))
+        for index, i in enumerate(results):
+            if i["song_title"] == item.text(0):
+                play_path = i["song_path"].split("songs")[1]
+                self.play_file = http_file_path + play_path
+                self.play_file = "%20".join(self.play_file.split(" "))
+                print(self.play_file)
+                self.current_play_index = index
+
+                if self.first_time_play == 0:
+                    self.vlcPlay.stop()
+                    self.resetSeek()
+                self.first_time_play = 0
+
+                self.vlcPlay = vlc.MediaPlayer(self.play_file)
+                self.vlcPlay.play()
+                self.play_status = 1
+                self.startSeek()
+                break
 
 
     def retranslateUi(self, widget):
@@ -281,10 +330,13 @@ class Ui_widget(object):
         __sortingEnabled = self.treeWidget.isSortingEnabled()
         self.treeWidget.setSortingEnabled(False)
 
+        # custom values
         self.first_time_play = 1
         self.play_status = 0
         self.current_play_index = 0
         self.counterSeek = 0
+        self.default_search_index = 0
+        self.default_sort_index = 0
 
         for i in range(number):
             self.treeWidget.topLevelItem(i).setText(0, _translate("widget", str(results[i]["song_title"]), None))
@@ -304,7 +356,7 @@ class Ui_widget(object):
         self.treeWidget_3.headerItem().setText(3, _translate("widget", "length", None))
         __sortingEnabled = self.treeWidget_3.isSortingEnabled()
         self.treeWidget_3.setSortingEnabled(False)
-        self.treeWidget_3.topLevelItem(0).setText(0, _translate("widget", "New Item1", None))
+        ''' self.treeWidget_3.topLevelItem(0).setText(0, _translate("widget", "New Item1", None))
         self.treeWidget_3.topLevelItem(0).setText(1, _translate("widget", "gfdssd", None))
         self.treeWidget_3.topLevelItem(0).setText(2, _translate("widget", "fsdfsd", None))
         self.treeWidget_3.topLevelItem(0).setText(3, _translate("widget", "dfsdfd", None))
@@ -315,7 +367,7 @@ class Ui_widget(object):
         self.treeWidget_3.topLevelItem(2).setText(0, _translate("widget", "nothing", None))
         self.treeWidget_3.topLevelItem(2).setText(1, _translate("widget", "dsfsdf", None))
         self.treeWidget_3.topLevelItem(2).setText(2, _translate("widget", "sdfsdfsdfa", None))
-        self.treeWidget_3.topLevelItem(2).setText(3, _translate("widget", "sdasds", None))
+        self.treeWidget_3.topLevelItem(2).setText(3, _translate("widget", "sdasds", None)) '''
         self.treeWidget_3.setSortingEnabled(__sortingEnabled)
         self.comboBox_3.setItemText(0, _translate("widget", "Title", None))
         self.comboBox_3.setItemText(1, _translate("widget", "Album", None))
@@ -340,7 +392,7 @@ class Ui_widget(object):
         self.dial.valueChanged.connect(self.dialChange)
         self.treeWidget.itemClicked.connect(self.clickItemAllSongs)
         self.treeWidget_3.itemClicked.connect(self.clickItemSearch)
-        self.seekStatus()
+        #self.seekStatus()
 
 
 
@@ -353,4 +405,3 @@ if __name__ == "__main__":
     ui.setupUi(widget)
     widget.show()
     sys.exit(app.exec_())
-#hi surya !! check check commit to repo
