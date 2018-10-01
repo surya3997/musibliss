@@ -1,6 +1,11 @@
 import pymongo
 from pymongo import MongoClient
-client = MongoClient("mongodb://hd15pd38:hd15pd38@10.1.67.157:27017/hd15pd38")
+import json
+config = json.load(open('configuration.json'))
+setup = config[config["current_state"]]
+mongo_connection = setup["mongo"]
+
+client = MongoClient(mongo_connection)
 db = client.hd15pd38
 
 result_cursor = db.songs.find()

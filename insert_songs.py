@@ -1,9 +1,15 @@
 import os
 import eyed3
 from pymongo import MongoClient
-client  = MongoClient("mongodb://localhost:27017")
+import json
+
+config = json.load(open('configuration.json'))
+setup = config[config["current_state"]]
+mongo_connection = setup["mongo"]
+path = setup["insert_songs_path"]
+
+client  = MongoClient(mongo_connection)
 db = client.hd15pd38
-path = "/var/www/html/songs/"
 x = [(i[0],i[2]) for i in os.walk(path)]
 name = []
 fullPath = []
